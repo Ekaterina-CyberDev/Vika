@@ -2,62 +2,64 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Вика, с днем рождения! 🎉</title>
   <style>
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: -apple-system, 'Segoe UI', Roboto, sans-serif;
       min-height: 100vh;
+      min-height: 100dvh;
       background: linear-gradient(145deg, #0b0e1a 0%, #1a1f35 100%);
       color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 12px;
-      overflow-x: hidden;
+      padding: 10px;
+      overflow: hidden;
       position: relative;
-      cursor: default;
-      user-select: none;
-      touch-action: pan-y;
+      touch-action: none;
     }
 
     .container {
-      background: rgba(255, 255, 255, 0.05);
+      background: rgba(255, 255, 255, 0.06);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 40px;
-      padding: 30px 16px 25px;
-      max-width: 700px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 32px;
+      padding: 24px 14px 20px;
+      max-width: 500px;
       width: 100%;
-      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
       z-index: 10;
       position: relative;
+      margin: auto;
     }
 
     h1 {
-      font-size: 2.4rem;
+      font-size: clamp(1.8rem, 6vw, 2.6rem);
       font-weight: 800;
       background: linear-gradient(to right, #f7e05e, #ffb07c, #ff7eb3);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
+      line-height: 1.2;
     }
 
     .subtitle {
-      font-size: 1rem;
+      font-size: clamp(0.85rem, 2.5vw, 1.1rem);
       opacity: 0.8;
       font-weight: 300;
-      margin-bottom: 14px;
-      letter-spacing: 2px;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
     }
 
     .subtitle span {
@@ -69,131 +71,139 @@
     .timer-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      margin: 12px 0 18px;
+      gap: 6px;
+      margin: 10px 0 14px;
     }
 
     .timer-item {
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 24px;
-      padding: 12px 4px;
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(0, 0, 0, 0.35);
+      border-radius: 18px;
+      padding: 10px 4px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     .timer-number {
-      font-size: 2.8rem;
+      font-size: clamp(2rem, 7vw, 3rem);
       font-weight: 700;
       line-height: 1;
       background: linear-gradient(180deg, #fff 30%, #b3b9e0);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      letter-spacing: 1px;
     }
 
     .timer-label {
-      font-size: 0.7rem;
+      font-size: clamp(0.5rem, 1.5vw, 0.7rem);
       text-transform: uppercase;
       letter-spacing: 1px;
-      opacity: 0.6;
-      margin-top: 4px;
-    }
-
-    .btn-group {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      margin: 12px 0 8px;
-    }
-
-    .action-btn {
-      border: none;
-      padding: 14px 18px;
-      border-radius: 60px;
-      font-size: 1rem;
-      font-weight: 700;
-      color: #fff;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      letter-spacing: 1px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      flex: 1 1 auto;
-      min-width: 120px;
-      touch-action: manipulation;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .action-btn:active {
-      transform: scale(0.94);
-    }
-
-    #fireBtn {
-      background: linear-gradient(135deg, #ff7eb3, #ff758c);
-      box-shadow: 0 8px 25px rgba(255, 117, 140, 0.35);
-    }
-
-    #kissBtn {
-      background: linear-gradient(135deg, #f7e05e, #ffb07c);
-      box-shadow: 0 8px 25px rgba(255, 200, 100, 0.3);
+      opacity: 0.5;
+      margin-top: 2px;
     }
 
     .kiss-counter {
-      font-size: 1.2rem;
-      margin: 6px 0 12px;
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      margin: 4px 0 10px;
       opacity: 0.9;
     }
 
     .kiss-counter span {
-      font-size: 1.8rem;
+      font-size: clamp(1.4rem, 4.5vw, 2rem);
       font-weight: 800;
       color: #ff7eb3;
       -webkit-text-fill-color: #ff7eb3;
     }
 
+    .btn-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 8px 0 10px;
+    }
+
+    .action-btn {
+      border: none;
+      padding: 16px 10px;
+      border-radius: 50px;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+      font-weight: 700;
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      touch-action: manipulation;
+      position: relative;
+      overflow: hidden;
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .action-btn:active {
+      transform: scale(0.92);
+    }
+
+    .action-btn .btn-icon {
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+    }
+
+    #fireBtn {
+      background: linear-gradient(135deg, #ff6b8a, #ee5a6f);
+      box-shadow: 0 6px 25px rgba(255, 80, 120, 0.4);
+    }
+
+    #kissBtn {
+      background: linear-gradient(135deg, #f7d44a, #f5a962);
+      box-shadow: 0 6px 25px rgba(255, 200, 80, 0.35);
+      color: #1a1a2e;
+    }
+
+    #kissBtn .btn-icon {
+      color: #1a1a2e;
+    }
+
     .wishes-slider {
-      background: rgba(0, 0, 0, 0.25);
-      border-radius: 32px;
-      padding: 18px 14px;
-      margin: 14px 0 12px;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      min-height: 100px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 28px;
+      padding: 16px 12px;
+      margin: 10px 0 10px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      min-height: 80px;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
 
     .wish-text {
-      font-size: 1.1rem;
+      font-size: clamp(0.95rem, 2.8vw, 1.15rem);
       font-weight: 400;
       line-height: 1.5;
       opacity: 0.95;
-      min-height: 60px;
+      min-height: 50px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0 6px;
+      padding: 0 4px;
       word-break: break-word;
     }
 
     .wish-text .emoji-big {
-      font-size: 2rem;
-      margin-right: 10px;
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      margin-right: 8px;
       flex-shrink: 0;
     }
 
     .slider-dots {
       display: flex;
       justify-content: center;
-      gap: 10px;
-      margin-top: 12px;
+      gap: 8px;
+      margin-top: 10px;
     }
 
     .slider-dot {
-      width: 10px;
-      height: 10px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.2);
       border: none;
@@ -206,61 +216,60 @@
     .slider-dot.active {
       background: #ff7eb3;
       box-shadow: 0 0 20px rgba(255, 117, 140, 0.5);
-      transform: scale(1.2);
+      transform: scale(1.3);
     }
 
     .music-btn {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 16px;
+      right: 16px;
       z-index: 100;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
       backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 60px;
-      padding: 10px 16px;
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 40px;
+      padding: 8px 14px;
       color: #fff;
-      font-size: 0.9rem;
+      font-size: clamp(0.7rem, 2vw, 0.85rem);
       cursor: pointer;
-      transition: 0.3s;
       display: flex;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      gap: 6px;
       touch-action: manipulation;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
 
     .music-btn:active {
-      transform: scale(0.95);
+      transform: scale(0.92);
     }
 
     .music-btn .icon {
-      font-size: 1.3rem;
+      font-size: clamp(1rem, 3vw, 1.3rem);
     }
 
     /* ФОНОВЫЕ СЕРДЦА */
     .heart-float {
       position: fixed;
-      font-size: 1.8rem;
       pointer-events: none;
       z-index: 0;
-      opacity: 0.15;
-      animation: floatHeart 18s infinite ease-in-out;
+      opacity: 0.08;
+      animation: floatHeart 20s infinite ease-in-out;
       user-select: none;
     }
 
     @keyframes floatHeart {
-      0% { transform: translateY(10vh) rotate(0deg) scale(0.8); opacity: 0.08; }
-      50% { opacity: 0.25; transform: translateY(-10vh) rotate(20deg) scale(1.2); }
-      100% { transform: translateY(10vh) rotate(0deg) scale(0.8); opacity: 0.08; }
+      0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0.05; }
+      50% { opacity: 0.2; transform: translateY(-30vh) rotate(20deg) scale(1.2); }
+      100% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0.05; }
     }
 
     /* КОНФЕТТИ */
     .confetti-piece {
       position: fixed;
-      width: 14px;
-      height: 14px;
-      top: -20px;
+      width: 12px;
+      height: 12px;
+      top: -10px;
       z-index: 5;
       pointer-events: none;
       opacity: 0.9;
@@ -270,25 +279,25 @@
 
     @keyframes confettiFall {
       0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
-      100% { transform: translateY(110vh) rotate(720deg) scale(0.2); opacity: 0; }
+      100% { transform: translateY(110vh) rotate(720deg) scale(0.1); opacity: 0; }
     }
 
     /* ЛЕТЯЩИЕ СЕРДЦА */
     .flying-heart {
       position: fixed;
-      font-size: 2.8rem;
+      font-size: clamp(2rem, 7vw, 3.2rem);
       pointer-events: none;
       z-index: 50;
       animation: flyHeartUp 2s ease-out forwards;
-      filter: drop-shadow(0 0 15px rgba(255, 100, 150, 0.6));
+      filter: drop-shadow(0 0 20px rgba(255, 80, 150, 0.5));
     }
 
     @keyframes flyHeartUp {
-      0% { opacity: 1; transform: translateY(0) scale(0.3) rotate(0deg); }
-      100% { opacity: 0; transform: translateY(-400px) scale(2) rotate(50deg); }
+      0% { opacity: 1; transform: translateY(0) scale(0.2) rotate(0deg); }
+      100% { opacity: 0; transform: translateY(-350px) scale(2) rotate(50deg); }
     }
 
-    /* ВСПЫШКА ПРИ НАЖАТИИ */
+    /* ВСПЫШКА */
     .flash-overlay {
       position: fixed;
       top: 0;
@@ -297,33 +306,34 @@
       height: 100%;
       pointer-events: none;
       z-index: 40;
-      background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 60%);
       opacity: 0;
-      animation: flashAnim 0.6s ease-out forwards;
+      animation: flashAnim 0.5s ease-out forwards;
     }
 
     @keyframes flashAnim {
-      0% { opacity: 1; transform: scale(0.5); }
-      100% { opacity: 0; transform: scale(2); }
+      0% { opacity: 1; transform: scale(0.3); }
+      100% { opacity: 0; transform: scale(2.5); }
     }
 
-    /* МОДАЛЬНОЕ ОКНО */
+    /* ОТКРЫТКА */
     .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(6px);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       z-index: 200;
       display: flex;
       justify-content: center;
       align-items: center;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.5s ease;
-      padding: 16px;
+      transition: opacity 0.4s ease;
+      padding: 20px;
     }
 
     .modal-overlay.show {
@@ -333,11 +343,11 @@
 
     .modal-card {
       background: linear-gradient(145deg, #1e243f, #2a3150);
-      border-radius: 48px;
-      padding: 36px 24px;
-      max-width: 480px;
+      border-radius: 40px;
+      padding: 32px 20px;
+      max-width: 400px;
       width: 100%;
-      border: 1px solid rgba(255, 215, 0, 0.2);
+      border: 1px solid rgba(255, 215, 0, 0.15);
       box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
       transform: scale(0.9);
       transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -348,8 +358,8 @@
     }
 
     .modal-card h2 {
-      font-size: 2rem;
-      margin-bottom: 12px;
+      font-size: clamp(1.4rem, 5vw, 2rem);
+      margin-bottom: 10px;
       background: linear-gradient(to right, #f7e05e, #ffb07c);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -357,38 +367,37 @@
     }
 
     .modal-card p {
-      font-size: 1.1rem;
+      font-size: clamp(0.95rem, 2.8vw, 1.1rem);
       line-height: 1.7;
       opacity: 0.9;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .modal-card .close-modal {
       background: linear-gradient(135deg, #ff7eb3, #ff758c);
       border: none;
-      padding: 14px 36px;
-      border-radius: 60px;
-      font-size: 1rem;
+      padding: 12px 32px;
+      border-radius: 50px;
+      font-size: clamp(0.9rem, 2.5vw, 1rem);
       font-weight: 700;
       color: #fff;
       cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 8px 25px rgba(255, 117, 140, 0.3);
       touch-action: manipulation;
+      box-shadow: 0 6px 25px rgba(255, 117, 140, 0.3);
     }
 
     .modal-card .close-modal:active {
-      transform: scale(0.95);
+      transform: scale(0.94);
     }
 
     .modal-card.locked .lock-icon {
-      font-size: 3.6rem;
-      margin-bottom: 12px;
+      font-size: clamp(2.8rem, 10vw, 4rem);
+      margin-bottom: 10px;
       display: block;
     }
 
     .modal-card.locked h2 {
-      font-size: 1.6rem;
+      font-size: clamp(1.2rem, 4vw, 1.6rem);
       background: linear-gradient(to right, #aaa, #ddd);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -396,8 +405,8 @@
     }
 
     .modal-card.locked p {
-      opacity: 0.6;
-      font-size: 0.95rem;
+      opacity: 0.5;
+      font-size: clamp(0.85rem, 2.5vw, 1rem);
     }
 
     .modal-card.locked .close-modal {
@@ -406,37 +415,30 @@
     }
 
     .open-card-trigger {
-      font-size: 0.85rem;
-      margin-top: 8px;
-      opacity: 0.7;
+      font-size: clamp(0.75rem, 2vw, 0.85rem);
+      margin-top: 6px;
+      opacity: 0.6;
       cursor: pointer;
       touch-action: manipulation;
-      transition: opacity 0.3s;
+      padding: 6px 0;
+      transition: opacity 0.2s;
     }
 
     .open-card-trigger:active {
       opacity: 1;
     }
 
-    @media (max-width: 480px) {
-      .container { padding: 20px 12px 18px; border-radius: 32px; }
-      h1 { font-size: 2.0rem; }
-      .timer-number { font-size: 2.2rem; }
-      .timer-grid { gap: 6px; }
-      .timer-item { padding: 8px 2px; }
-      .timer-label { font-size: 0.6rem; }
-      .action-btn { font-size: 0.9rem; padding: 12px 14px; min-width: 100px; }
-      .kiss-counter { font-size: 1rem; }
-      .kiss-counter span { font-size: 1.6rem; }
-      .wish-text { font-size: 1rem; }
-      .wish-text .emoji-big { font-size: 1.6rem; }
-      .flying-heart { font-size: 2.2rem; }
+    @media (max-width: 420px) {
+      .container { padding: 16px 10px 14px; border-radius: 24px; }
+      .btn-group { gap: 8px; }
+      .action-btn { padding: 14px 8px; min-height: 48px; font-size: 0.85rem; }
+      .timer-item { padding: 6px 2px; }
+      .wishes-slider { padding: 12px 8px; min-height: 70px; }
     }
 
-    @media (max-width: 380px) {
-      .timer-number { font-size: 1.8rem; }
-      .action-btn { font-size: 0.8rem; padding: 10px 10px; min-width: 80px; }
-      h1 { font-size: 1.7rem; }
+    @media (max-width: 350px) {
+      .timer-number { font-size: 1.6rem; }
+      .action-btn { font-size: 0.75rem; padding: 10px 6px; min-height: 42px; }
     }
   </style>
 </head>
@@ -477,8 +479,12 @@
     </div>
 
     <div class="btn-group">
-      <button class="action-btn" id="fireBtn">🎉 Фейерверк</button>
-      <button class="action-btn" id="kissBtn">💋 Чмок!</button>
+      <button class="action-btn" id="fireBtn">
+        <span class="btn-icon">🎉</span> Фейерверк
+      </button>
+      <button class="action-btn" id="kissBtn">
+        <span class="btn-icon">💋</span> Чмок!
+      </button>
     </div>
 
     <div class="wishes-slider">
@@ -490,7 +496,7 @@
     </div>
 
     <div class="open-card-trigger" id="openCardTrigger">
-      ❤️ Нажми, чтобы открыть поздравление
+      ❤️ Открыть поздравление
     </div>
   </div>
 
@@ -513,6 +519,7 @@
     (function() {
       "use strict";
 
+      // === ДАТА РОЖДЕНИЯ ===
       const BIRTHDAY_DATE = new Date('2026-07-08T00:00:00');
       const birthday = BIRTHDAY_DATE.getTime();
 
@@ -521,7 +528,7 @@
         today.getDate() === BIRTHDAY_DATE.getDate() &&
         today.getMonth() === BIRTHDAY_DATE.getMonth();
 
-      // ТАЙМЕР
+      // === ТАЙМЕР ===
       const daysEl = document.getElementById('days');
       const hoursEl = document.getElementById('hours');
       const minutesEl = document.getElementById('minutes');
@@ -541,36 +548,37 @@
       updateTimer();
       setInterval(updateTimer, 1000);
 
-      // ФОНОВЫЕ СЕРДЦА
+      // === ФОНОВЫЕ СЕРДЦА ===
       const heartsContainer = document.getElementById('hearts-container');
       const heartSymbols = ['♥', '❤', '💖', '💗', '💘'];
 
-      for (let i = 0; i < 22; i++) {
+      for (let i = 0; i < 20; i++) {
         const heart = document.createElement('div');
         heart.className = 'heart-float';
         heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
         heart.style.left = Math.random() * 100 + '%';
         heart.style.top = Math.random() * 100 + '%';
-        heart.style.fontSize = (1.2 + Math.random() * 2.4) + 'rem';
-        heart.style.animationDuration = (14 + Math.random() * 20) + 's';
-        heart.style.animationDelay = (Math.random() * 14) + 's';
-        heart.style.opacity = 0.06 + Math.random() * 0.2;
+        const size = 1 + Math.random() * 2.5;
+        heart.style.fontSize = size + 'rem';
+        heart.style.animationDuration = (15 + Math.random() * 25) + 's';
+        heart.style.animationDelay = (Math.random() * 15) + 's';
         heartsContainer.appendChild(heart);
       }
 
-      // КОНФЕТТИ
-      function createConfetti(count = 90) {
-        const colors = ['#ff7eb3', '#ffb07c', '#f7e05e', '#6dd5ed', '#a18cd1', '#fbc2eb', '#ff6a88', '#8ec5fc', '#ffd700'];
+      // === КОНФЕТТИ ===
+      function createConfetti(count) {
+        count = count || 80;
+        const colors = ['#ff6b8a', '#f7d44a', '#6dd5ed', '#a18cd1', '#fbc2eb', '#ff9a56', '#8ec5fc', '#ffd700', '#ff6a88'];
         const container = document.body;
 
         for (let i = 0; i < count; i++) {
           const piece = document.createElement('div');
           piece.className = 'confetti-piece';
-          const size = 8 + Math.random() * 14;
+          const size = 6 + Math.random() * 12;
           const color = colors[Math.floor(Math.random() * colors.length)];
           const left = Math.random() * 100;
-          const duration = 2.5 + Math.random() * 3.5;
-          const delay = Math.random() * 0.9;
+          const duration = 2 + Math.random() * 4;
+          const delay = Math.random() * 0.8;
 
           piece.style.width = size + 'px';
           piece.style.height = size + 'px';
@@ -579,81 +587,96 @@
           piece.style.animationDuration = duration + 's';
           piece.style.animationDelay = delay + 's';
           piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-          piece.style.boxShadow = `0 0 8px ${color}`;
+          piece.style.boxShadow = '0 0 6px ' + color;
 
           container.appendChild(piece);
-          setTimeout(() => { if (piece.parentNode) piece.remove(); }, (duration + delay) * 1000 + 200);
+          setTimeout(() => { if (piece.parentNode) piece.remove(); }, (duration + delay) * 1000 + 100);
         }
       }
 
-      // ВСПЫШКА
+      // === ВСПЫШКА ===
       function createFlash() {
         const flash = document.createElement('div');
         flash.className = 'flash-overlay';
         document.body.appendChild(flash);
-        setTimeout(() => { if (flash.parentNode) flash.remove(); }, 700);
+        setTimeout(() => { if (flash.parentNode) flash.remove(); }, 600);
       }
 
-      // ЛЕТЯЩИЕ СЕРДЦА
-      function flyHearts(count = 14) {
-        const symbols = ['💋', '❤️', '💖', '💗', '♥️', '✨', '💕', '🌸', '🌺'];
+      // === ЛЕТЯЩИЕ СЕРДЦА ===
+      function flyHearts(count) {
+        count = count || 12;
+        const symbols = ['💋', '❤️', '💖', '💗', '♥️', '✨', '💕', '🌸', '🌺', '💝'];
+        const container = document.body;
+
         for (let i = 0; i < count; i++) {
           const el = document.createElement('div');
           el.className = 'flying-heart';
           el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-          el.style.left = (10 + Math.random() * 80) + '%';
-          el.style.top = (20 + Math.random() * 50) + '%';
-          el.style.fontSize = (2.2 + Math.random() * 3) + 'rem';
-          el.style.animationDuration = (1.6 + Math.random() * 1.6) + 's';
-          document.body.appendChild(el);
+          el.style.left = (5 + Math.random() * 90) + '%';
+          el.style.top = (10 + Math.random() * 60) + '%';
+          el.style.fontSize = (1.8 + Math.random() * 2.8) + 'rem';
+          el.style.animationDuration = (1.4 + Math.random() * 1.8) + 's';
+          container.appendChild(el);
           setTimeout(() => { if (el.parentNode) el.remove(); }, 3500);
         }
       }
 
-      // ФЕЙЕРВЕРК
-      const fireBtn = document.getElementById('fireBtn');
-      fireBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        createConfetti(150);
+      // === ОБРАБОТЧИКИ КНОПОК (универсальные) ===
+      function setupButton(btnId, handler) {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+
+        // Основной обработчик
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          handler.call(this, e);
+        });
+
+        // Для мобильных - дополнительный обработчик touch
+        btn.addEventListener('touchstart', function(e) {
+          // Предотвращаем двойной вызов
+          if (!this._touched) {
+            this._touched = true;
+            // Не preventDefault, чтобы click тоже сработал
+          }
+        }, { passive: true });
+
+        btn.addEventListener('touchend', function(e) {
+          this._touched = false;
+        }, { passive: true });
+      }
+
+      // === ФЕЙЕРВЕРК ===
+      setupButton('fireBtn', function(e) {
+        createConfetti(130);
         createFlash();
-        this.style.transform = 'scale(0.94)';
+        this.style.transform = 'scale(0.92)';
         setTimeout(() => { this.style.transform = ''; }, 150);
-        const orig = this.textContent;
-        this.textContent = '✨🎇 Ура! 🎇✨';
-        setTimeout(() => { this.textContent = orig; }, 1000);
+        const orig = this.innerHTML;
+        this.innerHTML = '<span class="btn-icon">✨</span> Ура!';
+        setTimeout(() => { this.innerHTML = orig; }, 900);
       });
 
-      // Дублируем для touch
-      fireBtn.addEventListener('touchstart', function(e) {
-        // просто чтобы сработал click
-      }, { passive: true });
-
-      // ПОЦЕЛУИ
+      // === ПОЦЕЛУИ ===
       let kissCount = 0;
       const kissCountEl = document.getElementById('kissCount');
-      const kissBtn = document.getElementById('kissBtn');
 
-      kissBtn.addEventListener('click', function(e) {
-        e.preventDefault();
+      setupButton('kissBtn', function(e) {
         kissCount++;
         kissCountEl.textContent = kissCount;
-        flyHearts(16);
-        createConfetti(35);
+        flyHearts(18);
+        createConfetti(40);
         createFlash();
 
         this.style.transform = 'scale(0.92)';
         setTimeout(() => { this.style.transform = ''; }, 150);
 
-        const orig = this.textContent;
-        this.textContent = '😘💕 Чмок!';
-        setTimeout(() => { this.textContent = '💋 Чмок!'; }, 700);
+        const orig = this.innerHTML;
+        this.innerHTML = '<span class="btn-icon">😘</span> Чмок!';
+        setTimeout(() => { this.innerHTML = orig; }, 700);
       });
 
-      kissBtn.addEventListener('touchstart', function(e) {
-        // пассивный слушатель
-      }, { passive: true });
-
-      // СЛАЙДЕР ПОЖЕЛАНИЙ
+      // === СЛАЙДЕР ПОЖЕЛАНИЙ ===
       const wishes = [
         { emoji: '🌟', text: 'Ты — моё самое яркое вдохновение!' },
         { emoji: '🌈', text: 'Пусть жизнь будет такой же красочной, как радуга!' },
@@ -671,6 +694,9 @@
         dot.className = 'slider-dot' + (idx === 0 ? ' active' : '');
         dot.dataset.index = idx;
         dot.addEventListener('click', () => setWish(idx));
+        dot.addEventListener('touchstart', function(e) {
+          // Просто чтобы сработал click
+        }, { passive: true });
         dotsContainer.appendChild(dot);
       });
 
@@ -688,7 +714,7 @@
         setWish(next);
       }, 5000);
 
-      // МУЗЫКА
+      // === МУЗЫКА ===
       const audio = document.getElementById('bgMusic');
       const musicToggle = document.getElementById('musicToggle');
       const musicLabel = document.getElementById('musicLabel');
@@ -708,7 +734,7 @@
         }
       });
 
-      // ОТКРЫТКА
+      // === ОТКРЫТКА ===
       const modalOverlay = document.getElementById('modalOverlay');
       const modalCard = document.getElementById('modalCard');
       const modalContent = document.getElementById('modalContent');
@@ -755,36 +781,41 @@
         modalOverlay.classList.add('show');
 
         if (isBirthday) {
-          createConfetti(80);
-          setTimeout(() => createConfetti(60), 400);
-          for (let i = 0; i < 5; i++) {
-            setTimeout(() => {
-              const symbols = ['💖', '❤️', '💗', '✨', '🎉'];
-              for (let j = 0; j < 6; j++) {
-                const el = document.createElement('div');
-                el.className = 'flying-heart';
-                el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-                el.style.left = (20 + Math.random() * 60) + '%';
-                el.style.top = (30 + Math.random() * 40) + '%';
-                el.style.fontSize = (2.4 + Math.random() * 2.6) + 'rem';
-                el.style.animationDuration = (1.8 + Math.random() * 1.6) + 's';
-                document.body.appendChild(el);
-                setTimeout(() => { if (el.parentNode) el.remove(); }, 3500);
-              }
-            }, i * 300);
-          }
+          createConfetti(70);
+          setTimeout(() => createConfetti(50), 400);
+          setTimeout(() => flyHearts(10), 200);
+          setTimeout(() => flyHearts(8), 600);
         }
       });
 
+      // Закрытие по клику на фон
       modalOverlay.addEventListener('click', (e) => {
         if (e.target === modalOverlay) modalOverlay.classList.remove('show');
       });
 
-      // Стартовый фейерверк
-      window.addEventListener('load', () => {
-        setTimeout(() => createConfetti(40), 400);
-        setTimeout(() => createConfetti(30), 900);
-      });
+      // === СТАРТОВЫЙ ФЕЙЕРВЕРК ===
+      setTimeout(() => createConfetti(35), 500);
+      setTimeout(() => createConfetti(25), 1000);
+
+      // === ДОПОЛНИТЕЛЬНО: встряска для мобильных ===
+      // Если пользователь трясёт телефон - конфетти
+      if (window.DeviceMotionEvent) {
+        let lastShake = 0;
+        window.addEventListener('devicemotion', function(e) {
+          const acc = e.accelerationIncludingGravity;
+          if (!acc) return;
+          const total = Math.abs(acc.x) + Math.abs(acc.y) + Math.abs(acc.z);
+          const now = Date.now();
+          if (total > 25 && now - lastShake > 1000) {
+            lastShake = now;
+            createConfetti(60);
+            flyHearts(8);
+          }
+        }, { passive: true });
+      }
+
+      console.log('🚀 Мобильная версия готова!');
+      console.log(isBirthday ? '🎉 СЕГОДНЯ ДЕНЬ РОЖДЕНИЯ!' : '🔒 Открытка заблокирована');
 
     })();
   </script>
