@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
   <title>Вика, с днем рождения! 🎉</title>
   <style>
     /* ---------- ОБЩИЕ СТИЛИ ---------- */
@@ -21,11 +21,12 @@
       justify-content: center;
       align-items: center;
       text-align: center;
-      padding: 20px;
+      padding: 12px;
       overflow-x: hidden;
       position: relative;
       cursor: default;
       user-select: none;
+      touch-action: pan-y;
     }
 
     /* ---------- ГЛАВНАЯ КАРТОЧКА ---------- */
@@ -34,9 +35,9 @@
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 60px 60px 40px 40px;
-      padding: 50px 40px;
-      max-width: 800px;
+      border-radius: 40px;
+      padding: 30px 16px 25px;
+      max-width: 700px;
       width: 100%;
       box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 215, 0, 0.1);
       z-index: 10;
@@ -45,23 +46,23 @@
     }
 
     h1 {
-      font-size: 2.8rem;
+      font-size: 2.4rem;
       font-weight: 800;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       background: linear-gradient(to right, #f7e05e, #ffb07c, #ff7eb3);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
       text-shadow: 0 0 30px rgba(255, 200, 100, 0.2);
     }
 
     .subtitle {
-      font-size: 1.2rem;
+      font-size: 1rem;
       opacity: 0.8;
       font-weight: 300;
-      margin-bottom: 20px;
-      letter-spacing: 4px;
+      margin-bottom: 14px;
+      letter-spacing: 2px;
     }
 
     .subtitle span {
@@ -75,42 +76,37 @@
     .timer-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      margin: 20px 0 25px;
+      gap: 8px;
+      margin: 12px 0 18px;
     }
 
     .timer-item {
       background: rgba(0, 0, 0, 0.3);
-      border-radius: 30px;
-      padding: 15px 5px;
+      border-radius: 24px;
+      padding: 12px 4px;
       backdrop-filter: blur(4px);
       border: 1px solid rgba(255, 255, 255, 0.06);
       box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.02);
       transition: 0.2s;
     }
 
-    .timer-item:hover {
-      transform: translateY(-3px);
-      border-color: rgba(255, 215, 0, 0.3);
-    }
-
     .timer-number {
-      font-size: 3.8rem;
+      font-size: 2.8rem;
       font-weight: 700;
       line-height: 1;
       background: linear-gradient(180deg, #fff 30%, #b3b9e0);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
     }
 
     .timer-label {
-      font-size: 0.85rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
       opacity: 0.6;
-      margin-top: 6px;
+      margin-top: 4px;
     }
 
     /* ---------- КНОПКИ ---------- */
@@ -118,35 +114,30 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 15px;
-      margin: 15px 0 10px;
+      gap: 12px;
+      margin: 12px 0 8px;
     }
 
     .action-btn {
       background: linear-gradient(135deg, #ff7eb3, #ff758c);
       border: none;
-      padding: 16px 30px;
+      padding: 14px 18px;
       border-radius: 60px;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 700;
       color: #fff;
       cursor: pointer;
-      transition: all 0.25s ease;
+      transition: all 0.2s ease;
       box-shadow: 0 8px 25px rgba(255, 117, 140, 0.35);
       letter-spacing: 1px;
       border: 1px solid rgba(255, 255, 255, 0.15);
       flex: 1 1 auto;
-      min-width: 150px;
-    }
-
-    .action-btn:hover {
-      transform: scale(1.04) translateY(-3px);
-      box-shadow: 0 14px 35px rgba(255, 117, 140, 0.5);
-      background: linear-gradient(135deg, #ff8ebf, #ff6a82);
+      min-width: 120px;
+      touch-action: manipulation;
     }
 
     .action-btn:active {
-      transform: scale(0.96);
+      transform: scale(0.94);
     }
 
     .action-btn.kiss-btn {
@@ -154,20 +145,19 @@
       box-shadow: 0 8px 25px rgba(255, 200, 100, 0.3);
     }
 
-    .action-btn.kiss-btn:hover {
-      background: linear-gradient(135deg, #ffe070, #ffc08a);
-      box-shadow: 0 14px 35px rgba(255, 200, 100, 0.5);
+    .action-btn.kiss-btn:active {
+      transform: scale(0.94);
     }
 
     /* ---------- СЧЁТЧИК ПОЦЕЛУЕВ ---------- */
     .kiss-counter {
-      font-size: 1.3rem;
-      margin: 10px 0 15px;
+      font-size: 1.2rem;
+      margin: 6px 0 12px;
       opacity: 0.9;
     }
 
     .kiss-counter span {
-      font-size: 2rem;
+      font-size: 1.8rem;
       font-weight: 800;
       color: #ff7eb3;
       -webkit-text-fill-color: #ff7eb3;
@@ -176,11 +166,11 @@
     /* ---------- СЛАЙДЕР ПОЖЕЛАНИЙ ---------- */
     .wishes-slider {
       background: rgba(0, 0, 0, 0.25);
-      border-radius: 40px;
-      padding: 25px 20px;
-      margin: 20px 0 15px;
+      border-radius: 32px;
+      padding: 18px 14px;
+      margin: 14px 0 12px;
       border: 1px solid rgba(255, 255, 255, 0.05);
-      min-height: 110px;
+      min-height: 100px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -188,38 +178,41 @@
     }
 
     .wish-text {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 400;
-      line-height: 1.6;
+      line-height: 1.5;
       opacity: 0.95;
-      min-height: 70px;
+      min-height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0 10px;
+      padding: 0 6px;
+      word-break: break-word;
     }
 
     .wish-text .emoji-big {
-      font-size: 2.2rem;
-      margin-right: 14px;
+      font-size: 2rem;
+      margin-right: 10px;
+      flex-shrink: 0;
     }
 
     .slider-dots {
       display: flex;
       justify-content: center;
-      gap: 12px;
-      margin-top: 15px;
+      gap: 10px;
+      margin-top: 12px;
     }
 
     .slider-dot {
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.2);
       border: none;
       cursor: pointer;
       transition: 0.3s;
       padding: 0;
+      touch-action: manipulation;
     }
 
     .slider-dot.active {
@@ -228,38 +221,34 @@
       transform: scale(1.2);
     }
 
-    .slider-dot:hover {
-      background: rgba(255, 255, 255, 0.5);
-    }
-
     /* ---------- МУЗЫКАЛЬНАЯ КНОПКА ---------- */
     .music-btn {
       position: fixed;
-      bottom: 25px;
-      right: 25px;
+      bottom: 20px;
+      right: 20px;
       z-index: 100;
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(8px);
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 60px;
-      padding: 12px 20px;
+      padding: 10px 16px;
       color: #fff;
-      font-size: 1rem;
+      font-size: 0.9rem;
       cursor: pointer;
       transition: 0.3s;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      touch-action: manipulation;
     }
 
-    .music-btn:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: scale(1.05);
+    .music-btn:active {
+      transform: scale(0.95);
     }
 
     .music-btn .icon {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
     }
 
     /* ---------- АНИМАЦИЯ ДЛЯ СЕРДЕЦ (ФОН) ---------- */
@@ -288,11 +277,11 @@
       }
     }
 
-    /* ---------- КОНФЕТТИ ---------- */
+    /* ---------- КОНФЕТТИ (УВЕЛИЧЕННЫЙ РАЗМЕР ДЛЯ ТЕЛЕФОНА) ---------- */
     .confetti-piece {
       position: fixed;
-      width: 10px;
-      height: 10px;
+      width: 14px;
+      height: 14px;
       top: -20px;
       z-index: 5;
       pointer-events: none;
@@ -312,23 +301,24 @@
       }
     }
 
-    /* ---------- ВСПЛЫВАЮЩИЕ СЕРДЕЧКИ (ОТ КНОПКИ) ---------- */
+    /* ---------- ВСПЛЫВАЮЩИЕ СЕРДЕЧКИ (БОЛЬШЕ И ЯРЧЕ ДЛЯ ТЕЛЕФОНА) ---------- */
     .flying-heart {
       position: fixed;
-      font-size: 2.2rem;
+      font-size: 2.8rem;
       pointer-events: none;
       z-index: 50;
-      animation: flyHeartUp 1.8s ease-out forwards;
+      animation: flyHeartUp 2s ease-out forwards;
+      filter: drop-shadow(0 0 10px rgba(255, 100, 150, 0.4));
     }
 
     @keyframes flyHeartUp {
       0% {
         opacity: 1;
-        transform: translateY(0) scale(0.5) rotate(0deg);
+        transform: translateY(0) scale(0.4) rotate(0deg);
       }
       100% {
         opacity: 0;
-        transform: translateY(-260px) scale(1.6) rotate(40deg);
+        transform: translateY(-350px) scale(1.8) rotate(40deg);
       }
     }
 
@@ -348,6 +338,7 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.5s ease;
+      padding: 16px;
     }
 
     .modal-overlay.show {
@@ -357,10 +348,10 @@
 
     .modal-card {
       background: linear-gradient(145deg, #1e243f, #2a3150);
-      border-radius: 60px;
-      padding: 50px 40px;
-      max-width: 500px;
-      width: 90%;
+      border-radius: 48px;
+      padding: 36px 24px;
+      max-width: 480px;
+      width: 100%;
       border: 1px solid rgba(255, 215, 0, 0.2);
       box-shadow: 0 40px 80px rgba(0, 0, 0, 0.6);
       transform: scale(0.9);
@@ -373,8 +364,8 @@
     }
 
     .modal-card h2 {
-      font-size: 2.4rem;
-      margin-bottom: 15px;
+      font-size: 2rem;
+      margin-bottom: 12px;
       background: linear-gradient(to right, #f7e05e, #ffb07c);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -382,38 +373,38 @@
     }
 
     .modal-card p {
-      font-size: 1.2rem;
-      line-height: 1.8;
+      font-size: 1.1rem;
+      line-height: 1.7;
       opacity: 0.9;
-      margin-bottom: 25px;
+      margin-bottom: 20px;
     }
 
     .modal-card .close-modal {
       background: linear-gradient(135deg, #ff7eb3, #ff758c);
       border: none;
-      padding: 14px 40px;
+      padding: 14px 36px;
       border-radius: 60px;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 700;
       color: #fff;
       cursor: pointer;
       transition: 0.3s;
       box-shadow: 0 8px 25px rgba(255, 117, 140, 0.3);
+      touch-action: manipulation;
     }
 
-    .modal-card .close-modal:hover {
-      transform: scale(1.05);
+    .modal-card .close-modal:active {
+      transform: scale(0.95);
     }
 
-    /* ---------- ЗАБЛОКИРОВАННАЯ ОТКРЫТКА ---------- */
     .modal-card.locked .lock-icon {
-      font-size: 4rem;
-      margin-bottom: 15px;
+      font-size: 3.6rem;
+      margin-bottom: 12px;
       display: block;
     }
 
     .modal-card.locked h2 {
-      font-size: 1.8rem;
+      font-size: 1.6rem;
       background: linear-gradient(to right, #aaa, #ddd);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -422,7 +413,7 @@
 
     .modal-card.locked p {
       opacity: 0.6;
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
 
     .modal-card.locked .close-modal {
@@ -435,7 +426,7 @@
       position: fixed;
       pointer-events: none;
       z-index: 2;
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       opacity: 0.7;
       animation: fadeTrail 0.9s ease-out forwards;
     }
@@ -451,39 +442,96 @@
       }
     }
 
-    /* ---------- АДАПТИВ ---------- */
-    @media (max-width: 600px) {
+    /* ---------- АДАПТИВ ДЛЯ ТЕЛЕФОНОВ ---------- */
+    @media (max-width: 480px) {
       .container {
-        padding: 30px 16px;
-        border-radius: 40px;
+        padding: 20px 12px 18px;
+        border-radius: 32px;
       }
       h1 {
-        font-size: 2.2rem;
+        font-size: 2.0rem;
+      }
+      .subtitle {
+        font-size: 0.9rem;
+        letter-spacing: 1px;
       }
       .timer-number {
-        font-size: 2.6rem;
+        font-size: 2.2rem;
       }
       .timer-grid {
-        gap: 8px;
+        gap: 6px;
+      }
+      .timer-item {
+        padding: 8px 2px;
+      }
+      .timer-label {
+        font-size: 0.6rem;
       }
       .btn-group {
-        flex-direction: column;
-        align-items: center;
+        gap: 10px;
       }
       .action-btn {
-        width: 100%;
-        max-width: 280px;
+        font-size: 0.9rem;
+        padding: 12px 14px;
+        min-width: 100px;
+      }
+      .kiss-counter {
         font-size: 1rem;
-        padding: 14px 20px;
+      }
+      .kiss-counter span {
+        font-size: 1.6rem;
+      }
+      .wishes-slider {
+        padding: 14px 10px;
+        min-height: 90px;
       }
       .wish-text {
         font-size: 1rem;
+        min-height: 50px;
+      }
+      .wish-text .emoji-big {
+        font-size: 1.6rem;
+        margin-right: 8px;
+      }
+      .music-btn {
+        bottom: 14px;
+        right: 14px;
+        padding: 8px 14px;
+        font-size: 0.8rem;
+      }
+      .music-btn .icon {
+        font-size: 1.1rem;
       }
       .modal-card {
-        padding: 30px 20px;
+        padding: 28px 16px;
+        border-radius: 36px;
       }
       .modal-card h2 {
+        font-size: 1.6rem;
+      }
+      .modal-card p {
+        font-size: 1rem;
+      }
+      .confetti-piece {
+        width: 10px;
+        height: 10px;
+      }
+      .flying-heart {
+        font-size: 2.2rem;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .timer-number {
         font-size: 1.8rem;
+      }
+      .action-btn {
+        font-size: 0.8rem;
+        padding: 10px 10px;
+        min-width: 80px;
+      }
+      h1 {
+        font-size: 1.7rem;
       }
     }
   </style>
@@ -496,7 +544,7 @@
   <!-- МУЗЫКАЛЬНАЯ КНОПКА -->
   <button class="music-btn" id="musicToggle">
     <span class="icon">🔇</span>
-    <span id="musicLabel">Включить музыку</span>
+    <span id="musicLabel">Включить</span>
   </button>
 
   <!-- ГЛАВНЫЙ БЛОК -->
@@ -546,8 +594,8 @@
       <div class="slider-dots" id="sliderDots"></div>
     </div>
 
-    <!-- КНОПКА ДЛЯ ОТКРЫТКИ (ВСЕГДА ВИДНА, НО РАБОТАЕТ ТОЛЬКО В ДЕНЬ РОЖДЕНИЯ) -->
-    <div class="subtitle" style="font-size:0.9rem; margin-top:10px; opacity:0.7; cursor:pointer;" id="openCardTrigger">
+    <!-- КНОПКА ДЛЯ ОТКРЫТКИ -->
+    <div class="subtitle" style="font-size:0.85rem; margin-top:8px; opacity:0.7; cursor:pointer; touch-action:manipulation;" id="openCardTrigger">
       ❤️ Нажми, чтобы открыть поздравление
     </div>
   </div>
@@ -555,7 +603,6 @@
   <!-- МОДАЛЬНОЕ ОКНО (ОТКРЫТКА) -->
   <div class="modal-overlay" id="modalOverlay">
     <div class="modal-card" id="modalCard">
-      <!-- Контент будет меняться через JS -->
       <div id="modalContent">
         <span class="lock-icon">🔒</span>
         <h2>Ещё не время!</h2>
@@ -574,21 +621,18 @@
       "use strict";
 
       // --------------------------------------------------------------
-      // 1. ДАТА ДНЯ РОЖДЕНИЯ (ПОМЕНЯЙ!)
+      // 1. ДАТА ДНЯ РОЖДЕНИЯ
       // --------------------------------------------------------------
       const BIRTHDAY_DATE = new Date('2026-07-08T00:00:00');
       const birthday = BIRTHDAY_DATE.getTime();
 
-      // --------------------------------------------------------------
-      // 2. ПРОВЕРКА — СЕГОДНЯ ДЕНЬ РОЖДЕНИЯ?
-      // --------------------------------------------------------------
       const today = new Date();
       const isBirthday =
         today.getDate() === BIRTHDAY_DATE.getDate() &&
         today.getMonth() === BIRTHDAY_DATE.getMonth();
 
       // --------------------------------------------------------------
-      // 3. ТАЙМЕР
+      // 2. ТАЙМЕР
       // --------------------------------------------------------------
       const daysEl = document.getElementById('days');
       const hoursEl = document.getElementById('hours');
@@ -615,7 +659,7 @@
       setInterval(updateTimer, 1000);
 
       // --------------------------------------------------------------
-      // 4. ФОНОВЫЕ ПАРЯЩИЕ СЕРДЦА
+      // 3. ФОНОВЫЕ ПАРЯЩИЕ СЕРДЦА
       // --------------------------------------------------------------
       const heartsContainer = document.getElementById('hearts-container');
       const heartSymbols = ['♥', '❤', '💖', '💗', '💘'];
@@ -634,7 +678,7 @@
       }
 
       // --------------------------------------------------------------
-      // 5. КОНФЕТТИ
+      // 4. КОНФЕТТИ (увеличенный размер для телефона)
       // --------------------------------------------------------------
       function createConfetti(count = 90) {
         const colors = ['#ff7eb3', '#ffb07c', '#f7e05e', '#6dd5ed', '#a18cd1', '#fbc2eb', '#ff6a88', '#8ec5fc', '#ffd700'];
@@ -643,7 +687,8 @@
         for (let i = 0; i < count; i++) {
           const piece = document.createElement('div');
           piece.className = 'confetti-piece';
-          const size = 6 + Math.random() * 12;
+          // чуть больше для заметности
+          const size = 8 + Math.random() * 14;
           const color = colors[Math.floor(Math.random() * colors.length)];
           const left = Math.random() * 100;
           const duration = 2.5 + Math.random() * 3.5;
@@ -656,7 +701,7 @@
           piece.style.animationDuration = duration + 's';
           piece.style.animationDelay = delay + 's';
           piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-          piece.style.boxShadow = `0 0 6px ${color}`;
+          piece.style.boxShadow = `0 0 8px ${color}`;
 
           container.appendChild(piece);
           setTimeout(() => { if (piece.parentNode) piece.remove(); }, (duration + delay) * 1000 + 200);
@@ -664,7 +709,7 @@
       }
 
       document.getElementById('fireBtn').addEventListener('click', function() {
-        createConfetti(130);
+        createConfetti(140);
         this.style.transform = 'scale(0.94)';
         setTimeout(() => { this.style.transform = ''; }, 150);
         const orig = this.textContent;
@@ -672,28 +717,33 @@
         setTimeout(() => { this.textContent = orig; }, 1000);
       });
 
+      // также по тапу (для мобильных)
+      document.getElementById('fireBtn').addEventListener('touchstart', function(e) {
+        // не блокируем, чтобы сработал click
+      }, { passive: true });
+
       window.addEventListener('load', () => {
         setTimeout(() => createConfetti(50), 400);
         setTimeout(() => createConfetti(35), 900);
       });
 
       // --------------------------------------------------------------
-      // 6. ПОЦЕЛУИ
+      // 5. ПОЦЕЛУИ + летящие сердца (увеличены)
       // --------------------------------------------------------------
       let kissCount = 0;
       const kissCountEl = document.getElementById('kissCount');
       const kissBtn = document.getElementById('kissBtn');
 
-      function flyHearts(count = 8) {
-        const symbols = ['💋', '❤️', '💖', '💗', '♥️'];
+      function flyHearts(count = 12) {
+        const symbols = ['💋', '❤️', '💖', '💗', '♥️', '✨', '💕'];
         for (let i = 0; i < count; i++) {
           const el = document.createElement('div');
           el.className = 'flying-heart';
           el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-          el.style.left = (30 + Math.random() * 40) + '%';
-          el.style.top = (40 + Math.random() * 30) + '%';
-          el.style.fontSize = (1.8 + Math.random() * 2.2) + 'rem';
-          el.style.animationDuration = (1.4 + Math.random() * 1.2) + 's';
+          el.style.left = (15 + Math.random() * 70) + '%';
+          el.style.top = (30 + Math.random() * 40) + '%';
+          el.style.fontSize = (2.2 + Math.random() * 2.8) + 'rem';
+          el.style.animationDuration = (1.6 + Math.random() * 1.4) + 's';
           document.body.appendChild(el);
           setTimeout(() => { if (el.parentNode) el.remove(); }, 3000);
         }
@@ -702,8 +752,8 @@
       kissBtn.addEventListener('click', function() {
         kissCount++;
         kissCountEl.textContent = kissCount;
-        flyHearts(10);
-        createConfetti(25);
+        flyHearts(14);
+        createConfetti(30);
 
         this.style.transform = 'scale(0.92)';
         setTimeout(() => { this.style.transform = ''; }, 150);
@@ -714,7 +764,7 @@
       });
 
       // --------------------------------------------------------------
-      // 7. СЛАЙДЕР ПОЖЕЛАНИЙ
+      // 6. СЛАЙДЕР ПОЖЕЛАНИЙ
       // --------------------------------------------------------------
       const wishes = [
         { emoji: '🌟', text: 'Ты — моё самое яркое вдохновение!' },
@@ -751,7 +801,7 @@
       }, 5000);
 
       // --------------------------------------------------------------
-      // 8. МУЗЫКА
+      // 7. МУЗЫКА
       // --------------------------------------------------------------
       const audio = document.getElementById('bgMusic');
       const musicToggle = document.getElementById('musicToggle');
@@ -763,28 +813,25 @@
           audio.pause();
           isMusicPlaying = false;
           this.querySelector('.icon').textContent = '🔇';
-          musicLabel.textContent = 'Включить музыку';
+          musicLabel.textContent = 'Включить';
         } else {
           audio.play().catch(() => {});
           isMusicPlaying = true;
           this.querySelector('.icon').textContent = '🎵';
-          musicLabel.textContent = 'Выключить музыку';
+          musicLabel.textContent = 'Выключить';
         }
       });
 
       // --------------------------------------------------------------
-      // 9. ОТКРЫТКА — РАБОТАЕТ ТОЛЬКО В ДЕНЬ РОЖДЕНИЯ!
+      // 8. ОТКРЫТКА
       // --------------------------------------------------------------
       const modalOverlay = document.getElementById('modalOverlay');
       const modalCard = document.getElementById('modalCard');
       const modalContent = document.getElementById('modalContent');
-      const closeModalBtn = document.getElementById('closeModal');
       const openCardTrigger = document.getElementById('openCardTrigger');
 
-      // Функция для обновления содержимого открытки
       function updateModalContent() {
         if (isBirthday) {
-          // 🎉 РАСПАКОВЫВАЕМ ОТКРЫТКУ
           modalCard.classList.remove('locked');
           modalContent.innerHTML = `
             <h2>💌 Для тебя, сестрёнка</h2>
@@ -797,12 +844,10 @@
             </p>
             <button class="close-modal" id="closeModal">Закрыть ❤️</button>
           `;
-          // Перепривязываем кнопку закрытия
           document.getElementById('closeModal').addEventListener('click', () => {
             modalOverlay.classList.remove('show');
           });
         } else {
-          // 🔒 ЗАБЛОКИРОВАНО
           modalCard.classList.add('locked');
           const day = String(BIRTHDAY_DATE.getDate()).padStart(2, '0');
           const month = String(BIRTHDAY_DATE.getMonth() + 1).padStart(2, '0');
@@ -821,16 +866,13 @@
         }
       }
 
-      // Обработчик клика по кнопке "Нажми, чтобы открыть поздравление"
       openCardTrigger.addEventListener('click', function() {
-        updateModalContent(); // обновляем содержимое перед показом
+        updateModalContent();
         modalOverlay.classList.add('show');
 
-        // Если сегодня день рождения — дополнительный фейерверк и сердечки!
         if (isBirthday) {
           createConfetti(80);
           setTimeout(() => createConfetti(60), 400);
-          // Летящие сердца
           for (let i = 0; i < 5; i++) {
             setTimeout(() => {
               const symbols = ['💖', '❤️', '💗', '✨', '🎉'];
@@ -840,8 +882,8 @@
                 el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
                 el.style.left = (20 + Math.random() * 60) + '%';
                 el.style.top = (30 + Math.random() * 40) + '%';
-                el.style.fontSize = (2 + Math.random() * 2.5) + 'rem';
-                el.style.animationDuration = (1.6 + Math.random() * 1.4) + 's';
+                el.style.fontSize = (2.4 + Math.random() * 2.6) + 'rem';
+                el.style.animationDuration = (1.8 + Math.random() * 1.6) + 's';
                 document.body.appendChild(el);
                 setTimeout(() => { if (el.parentNode) el.remove(); }, 3500);
               }
@@ -850,46 +892,38 @@
         }
       });
 
-      // Закрытие по клику на фон
       modalOverlay.addEventListener('click', (e) => {
         if (e.target === modalOverlay) modalOverlay.classList.remove('show');
       });
 
       // --------------------------------------------------------------
-      // 10. ЗВЁЗДНЫЙ СЛЕД
+      // 9. ЗВЁЗДНЫЙ СЛЕД (адаптирован для тач-событий)
       // --------------------------------------------------------------
       const starEmojis = ['✨', '⭐', '🌟', '💫'];
 
-      document.addEventListener('mousemove', (e) => {
+      function createStar(x, y) {
         if (Math.random() > 0.75) return;
         const star = document.createElement('div');
         star.className = 'star-trail';
         star.textContent = starEmojis[Math.floor(Math.random() * starEmojis.length)];
-        star.style.left = (e.clientX - 10) + 'px';
-        star.style.top = (e.clientY - 10) + 'px';
-        star.style.fontSize = (0.8 + Math.random() * 1.2) + 'rem';
+        star.style.left = (x - 10) + 'px';
+        star.style.top = (y - 10) + 'px';
+        star.style.fontSize = (1.0 + Math.random() * 1.6) + 'rem';
         document.body.appendChild(star);
         setTimeout(() => { if (star.parentNode) star.remove(); }, 1000);
+      }
+
+      document.addEventListener('mousemove', (e) => {
+        createStar(e.clientX, e.clientY);
       });
 
       document.addEventListener('touchmove', (e) => {
         const touch = e.touches[0];
         if (!touch) return;
-        if (Math.random() > 0.8) return;
-        const star = document.createElement('div');
-        star.className = 'star-trail';
-        star.textContent = starEmojis[Math.floor(Math.random() * starEmojis.length)];
-        star.style.left = (touch.clientX - 10) + 'px';
-        star.style.top = (touch.clientY - 10) + 'px';
-        star.style.fontSize = (1 + Math.random() * 1.4) + 'rem';
-        document.body.appendChild(star);
-        setTimeout(() => { if (star.parentNode) star.remove(); }, 1000);
+        createStar(touch.clientX, touch.clientY);
       }, { passive: true });
 
-      // --------------------------------------------------------------
-      // 11. БОНУС: Показываем статус (заблокировано/открыто) при загрузке
-      // --------------------------------------------------------------
-      console.log(isBirthday ? '🎉 СЕГОДНЯ ДЕНЬ РОЖДЕНИЯ! Открытка доступна!' : '🔒 Открытка заблокирована до ' + BIRTHDAY_DATE.toLocaleDateString());
+      console.log(isBirthday ? '🎉 СЕГОДНЯ ДЕНЬ РОЖДЕНИЯ!' : '🔒 Открытка заблокирована до ' + BIRTHDAY_DATE.toLocaleDateString());
 
     })();
   </script>
