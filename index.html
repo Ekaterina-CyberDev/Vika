@@ -28,6 +28,18 @@
       touch-action: none;
     }
 
+    /* Canvas для анимаций поверх всего */
+    #animationCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      touch-action: none;
+    }
+
     .container {
       background: rgba(255, 255, 255, 0.06);
       backdrop-filter: blur(12px);
@@ -35,7 +47,7 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 32px;
       padding: 24px 14px 20px;
-      max-width: 500px;
+      max-width: 480px;
       width: 100%;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
       z-index: 10;
@@ -138,6 +150,7 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .action-btn:active {
@@ -248,7 +261,7 @@
       font-size: clamp(1rem, 3vw, 1.3rem);
     }
 
-    /* ФОНОВЫЕ СЕРДЦА */
+    /* ФОНОВЫЕ СЕРДЦА через CSS */
     .heart-float {
       position: fixed;
       pointer-events: none;
@@ -262,58 +275,6 @@
       0% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0.05; }
       50% { opacity: 0.2; transform: translateY(-30vh) rotate(20deg) scale(1.2); }
       100% { transform: translateY(0) rotate(0deg) scale(0.8); opacity: 0.05; }
-    }
-
-    /* КОНФЕТТИ */
-    .confetti-piece {
-      position: fixed;
-      width: 12px;
-      height: 12px;
-      top: -10px;
-      z-index: 5;
-      pointer-events: none;
-      opacity: 0.9;
-      border-radius: 2px;
-      animation: confettiFall linear forwards;
-    }
-
-    @keyframes confettiFall {
-      0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
-      100% { transform: translateY(110vh) rotate(720deg) scale(0.1); opacity: 0; }
-    }
-
-    /* ЛЕТЯЩИЕ СЕРДЦА */
-    .flying-heart {
-      position: fixed;
-      font-size: clamp(2rem, 7vw, 3.2rem);
-      pointer-events: none;
-      z-index: 50;
-      animation: flyHeartUp 2s ease-out forwards;
-      filter: drop-shadow(0 0 20px rgba(255, 80, 150, 0.5));
-    }
-
-    @keyframes flyHeartUp {
-      0% { opacity: 1; transform: translateY(0) scale(0.2) rotate(0deg); }
-      100% { opacity: 0; transform: translateY(-350px) scale(2) rotate(50deg); }
-    }
-
-    /* ВСПЫШКА */
-    .flash-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 40;
-      background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 60%);
-      opacity: 0;
-      animation: flashAnim 0.5s ease-out forwards;
-    }
-
-    @keyframes flashAnim {
-      0% { opacity: 1; transform: scale(0.3); }
-      100% { opacity: 0; transform: scale(2.5); }
     }
 
     /* ОТКРЫТКА */
@@ -435,15 +396,14 @@
       .timer-item { padding: 6px 2px; }
       .wishes-slider { padding: 12px 8px; min-height: 70px; }
     }
-
-    @media (max-width: 350px) {
-      .timer-number { font-size: 1.6rem; }
-      .action-btn { font-size: 0.75rem; padding: 10px 6px; min-height: 42px; }
-    }
   </style>
 </head>
 <body>
 
+  <!-- Canvas для анимаций -->
+  <canvas id="animationCanvas"></canvas>
+
+  <!-- ФОНОВЫЕ СЕРДЦА (HTML) -->
   <div id="hearts-container"></div>
 
   <button class="music-btn" id="musicToggle">
@@ -519,16 +479,248 @@
     (function() {
       "use strict";
 
-      // === ДАТА РОЖДЕНИЯ ===
+      // === CANVAS АНИМАЦИИ ===
+      const canvas = document.getElementById('animationCanvas');
+      const ctx = canvas.getContext('2d');
+
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas);
+
+      // === ЧАСТИЦЫ ===
+      let particles = [];
+      let hearts = [];
+
+      class Particle {
+        constructor(x, y, color, size, vx, vy, life, type) {
+          this.x = x;
+          this.y = y;
+          this.color = color;
+          this.size = size || 6 + Math.random() * 8;
+          this.vx = vx || (Math.random() - 0.5) * 8;
+          this.vy = vy || -Math.random() * 10 - 3;
+          this.life = life || 1;
+          this.maxLife = this.life;
+          this.gravity = 0.15;
+          this.type = type || 'confetti';
+          this.rotation = Math.random() * Math.PI * 2;
+          this.rotationSpeed = (Math.random() - 0.5) * 0.1;
+        }
+
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          this.vy += this.gravity;
+          this.vx *= 0.99;
+          this.life -= 0.008;
+          this.rotation += this.rotationSpeed;
+          return this.life > 0;
+        }
+
+        draw(ctx) {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.rotation);
+
+          const alpha = Math.max(0, this.life / this.maxLife);
+          ctx.globalAlpha = alpha;
+
+          if (this.type === 'heart') {
+            ctx.font = (this.size * 1.8) + 'px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = this.color;
+            ctx.shadowColor = 'rgba(255,100,150,0.5)';
+            ctx.shadowBlur = 20;
+            ctx.fillText('❤️', 0, 0);
+          } else {
+            ctx.fillStyle = this.color;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 8;
+            ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+          }
+
+          ctx.restore();
+          return true;
+        }
+      }
+
+      // === СОЗДАНИЕ ЭФФЕКТОВ ===
+
+      function createFireworks(count, x, y) {
+        const colors = ['#ff6b8a', '#f7d44a', '#6dd5ed', '#a18cd1', '#fbc2eb', '#ff9a56', '#8ec5fc', '#ffd700', '#ff6a88', '#ff3d6b'];
+        const cx = x || window.innerWidth / 2;
+        const cy = y || window.innerHeight / 2;
+
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 2 + Math.random() * 6;
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          const size = 4 + Math.random() * 8;
+
+          particles.push(new Particle(
+            cx + (Math.random() - 0.5) * 20,
+            cy + (Math.random() - 0.5) * 20,
+            color,
+            size,
+            Math.cos(angle) * speed,
+            Math.sin(angle) * speed - 2,
+            0.8 + Math.random() * 0.4
+          ));
+        }
+      }
+
+      function createHearts(count, x, y) {
+        const colors = ['#ff6b8a', '#ff3d6b', '#ff7eb3', '#ff9a9e', '#f7d44a'];
+        const cx = x || window.innerWidth / 2;
+        const cy = y || window.innerHeight / 2;
+
+        for (let i = 0; i < count; i++) {
+          const angle = -Math.PI / 2 + (Math.random() - 0.5) * 1.2;
+          const speed = 2 + Math.random() * 5;
+          const color = colors[Math.floor(Math.random() * colors.length)];
+          const size = 14 + Math.random() * 18;
+
+          const p = new Particle(
+            cx + (Math.random() - 0.5) * 30,
+            cy + (Math.random() - 0.5) * 30,
+            color,
+            size,
+            Math.cos(angle) * speed * 0.6,
+            Math.sin(angle) * speed - 4,
+            1.2 + Math.random() * 0.6,
+            'heart'
+          );
+          p.gravity = 0.08;
+          particles.push(p);
+        }
+      }
+
+      // === АНИМАЦИОННЫЙ ЦИКЛ ===
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Обновляем и рисуем частицы
+        particles = particles.filter(p => {
+          const alive = p.update();
+          if (alive) {
+            p.draw(ctx);
+          }
+          return alive;
+        });
+
+        // Ограничиваем количество частиц
+        if (particles.length > 500) {
+          particles.splice(0, particles.length - 500);
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+
+      // === УНИВЕРСАЛЬНАЯ ФУНКЦИЯ ДЛЯ ЗАПУСКА ЭФФЕКТОВ ===
+      function triggerEffect(type) {
+        const rect = canvas.getBoundingClientRect();
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+
+        if (type === 'fireworks') {
+          for (let burst = 0; burst < 3; burst++) {
+            setTimeout(() => {
+              const offsetX = (Math.random() - 0.5) * 200;
+              const offsetY = (Math.random() - 0.5) * 150;
+              createFireworks(40 + Math.random() * 30, cx + offsetX, cy + offsetY - 50);
+            }, burst * 150);
+          }
+          // Дополнительные вспышки
+          setTimeout(() => {
+            createFireworks(30, cx - 100 + Math.random() * 200, cy - 100 + Math.random() * 200);
+          }, 400);
+        } else if (type === 'kiss') {
+          // Много сердец
+          for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+              const offsetX = (Math.random() - 0.5) * 250;
+              const offsetY = (Math.random() - 0.5) * 200;
+              createHearts(12 + Math.random() * 10, cx + offsetX, cy + offsetY - 30);
+            }, i * 120);
+          }
+          // Немного конфетти для красоты
+          setTimeout(() => {
+            createFireworks(25, cx + (Math.random() - 0.5) * 150, cy + (Math.random() - 0.5) * 150);
+          }, 200);
+        }
+
+        // Визуальная вспышка
+        const flash = document.createElement('div');
+        flash.style.cssText = `
+          position: fixed;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          pointer-events: none;
+          z-index: 40;
+          background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+          opacity: 1;
+          transition: opacity 0.4s ease;
+        `;
+        document.body.appendChild(flash);
+        requestAnimationFrame(() => {
+          flash.style.opacity = '0';
+        });
+        setTimeout(() => {
+          if (flash.parentNode) flash.remove();
+        }, 500);
+      }
+
+      // === ОБРАБОТЧИКИ КНОПОК ===
+      function setupButton(btnId, effectType) {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+
+        function handler(e) {
+          e.preventDefault();
+          triggerEffect(effectType);
+
+          // Визуальный отклик кнопки
+          btn.style.transform = 'scale(0.92)';
+          setTimeout(() => { btn.style.transform = ''; }, 150);
+
+          // Смена текста
+          const orig = btn.innerHTML;
+          if (effectType === 'fireworks') {
+            btn.innerHTML = '<span class="btn-icon">✨</span> Ура!';
+          } else {
+            btn.innerHTML = '<span class="btn-icon">😘</span> Чмок!';
+          }
+          setTimeout(() => { btn.innerHTML = orig; }, 700);
+        }
+
+        btn.addEventListener('click', handler);
+        btn.addEventListener('touchstart', function(e) {
+          // Не блокируем, просто чтобы сработал click
+        }, { passive: true });
+      }
+
+      setupButton('fireBtn', 'fireworks');
+      setupButton('kissBtn', 'kiss');
+
+      // === СЧЁТЧИК ПОЦЕЛУЕВ ===
+      let kissCount = 0;
+      const kissCountEl = document.getElementById('kissCount');
+
+      document.getElementById('kissBtn').addEventListener('click', function() {
+        kissCount++;
+        kissCountEl.textContent = kissCount;
+      });
+
+      // === ТАЙМЕР ===
       const BIRTHDAY_DATE = new Date('2026-07-08T00:00:00');
       const birthday = BIRTHDAY_DATE.getTime();
 
-      const today = new Date();
-      const isBirthday =
-        today.getDate() === BIRTHDAY_DATE.getDate() &&
-        today.getMonth() === BIRTHDAY_DATE.getMonth();
-
-      // === ТАЙМЕР ===
       const daysEl = document.getElementById('days');
       const hoursEl = document.getElementById('hours');
       const minutesEl = document.getElementById('minutes');
@@ -565,117 +757,6 @@
         heartsContainer.appendChild(heart);
       }
 
-      // === КОНФЕТТИ ===
-      function createConfetti(count) {
-        count = count || 80;
-        const colors = ['#ff6b8a', '#f7d44a', '#6dd5ed', '#a18cd1', '#fbc2eb', '#ff9a56', '#8ec5fc', '#ffd700', '#ff6a88'];
-        const container = document.body;
-
-        for (let i = 0; i < count; i++) {
-          const piece = document.createElement('div');
-          piece.className = 'confetti-piece';
-          const size = 6 + Math.random() * 12;
-          const color = colors[Math.floor(Math.random() * colors.length)];
-          const left = Math.random() * 100;
-          const duration = 2 + Math.random() * 4;
-          const delay = Math.random() * 0.8;
-
-          piece.style.width = size + 'px';
-          piece.style.height = size + 'px';
-          piece.style.background = color;
-          piece.style.left = left + '%';
-          piece.style.animationDuration = duration + 's';
-          piece.style.animationDelay = delay + 's';
-          piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
-          piece.style.boxShadow = '0 0 6px ' + color;
-
-          container.appendChild(piece);
-          setTimeout(() => { if (piece.parentNode) piece.remove(); }, (duration + delay) * 1000 + 100);
-        }
-      }
-
-      // === ВСПЫШКА ===
-      function createFlash() {
-        const flash = document.createElement('div');
-        flash.className = 'flash-overlay';
-        document.body.appendChild(flash);
-        setTimeout(() => { if (flash.parentNode) flash.remove(); }, 600);
-      }
-
-      // === ЛЕТЯЩИЕ СЕРДЦА ===
-      function flyHearts(count) {
-        count = count || 12;
-        const symbols = ['💋', '❤️', '💖', '💗', '♥️', '✨', '💕', '🌸', '🌺', '💝'];
-        const container = document.body;
-
-        for (let i = 0; i < count; i++) {
-          const el = document.createElement('div');
-          el.className = 'flying-heart';
-          el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
-          el.style.left = (5 + Math.random() * 90) + '%';
-          el.style.top = (10 + Math.random() * 60) + '%';
-          el.style.fontSize = (1.8 + Math.random() * 2.8) + 'rem';
-          el.style.animationDuration = (1.4 + Math.random() * 1.8) + 's';
-          container.appendChild(el);
-          setTimeout(() => { if (el.parentNode) el.remove(); }, 3500);
-        }
-      }
-
-      // === ОБРАБОТЧИКИ КНОПОК (универсальные) ===
-      function setupButton(btnId, handler) {
-        const btn = document.getElementById(btnId);
-        if (!btn) return;
-
-        // Основной обработчик
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          handler.call(this, e);
-        });
-
-        // Для мобильных - дополнительный обработчик touch
-        btn.addEventListener('touchstart', function(e) {
-          // Предотвращаем двойной вызов
-          if (!this._touched) {
-            this._touched = true;
-            // Не preventDefault, чтобы click тоже сработал
-          }
-        }, { passive: true });
-
-        btn.addEventListener('touchend', function(e) {
-          this._touched = false;
-        }, { passive: true });
-      }
-
-      // === ФЕЙЕРВЕРК ===
-      setupButton('fireBtn', function(e) {
-        createConfetti(130);
-        createFlash();
-        this.style.transform = 'scale(0.92)';
-        setTimeout(() => { this.style.transform = ''; }, 150);
-        const orig = this.innerHTML;
-        this.innerHTML = '<span class="btn-icon">✨</span> Ура!';
-        setTimeout(() => { this.innerHTML = orig; }, 900);
-      });
-
-      // === ПОЦЕЛУИ ===
-      let kissCount = 0;
-      const kissCountEl = document.getElementById('kissCount');
-
-      setupButton('kissBtn', function(e) {
-        kissCount++;
-        kissCountEl.textContent = kissCount;
-        flyHearts(18);
-        createConfetti(40);
-        createFlash();
-
-        this.style.transform = 'scale(0.92)';
-        setTimeout(() => { this.style.transform = ''; }, 150);
-
-        const orig = this.innerHTML;
-        this.innerHTML = '<span class="btn-icon">😘</span> Чмок!';
-        setTimeout(() => { this.innerHTML = orig; }, 700);
-      });
-
       // === СЛАЙДЕР ПОЖЕЛАНИЙ ===
       const wishes = [
         { emoji: '🌟', text: 'Ты — моё самое яркое вдохновение!' },
@@ -694,9 +775,6 @@
         dot.className = 'slider-dot' + (idx === 0 ? ' active' : '');
         dot.dataset.index = idx;
         dot.addEventListener('click', () => setWish(idx));
-        dot.addEventListener('touchstart', function(e) {
-          // Просто чтобы сработал click
-        }, { passive: true });
         dotsContainer.appendChild(dot);
       });
 
@@ -735,6 +813,11 @@
       });
 
       // === ОТКРЫТКА ===
+      const today = new Date();
+      const isBirthday =
+        today.getDate() === BIRTHDAY_DATE.getDate() &&
+        today.getMonth() === BIRTHDAY_DATE.getMonth();
+
       const modalOverlay = document.getElementById('modalOverlay');
       const modalCard = document.getElementById('modalCard');
       const modalContent = document.getElementById('modalContent');
@@ -781,40 +864,23 @@
         modalOverlay.classList.add('show');
 
         if (isBirthday) {
-          createConfetti(70);
-          setTimeout(() => createConfetti(50), 400);
-          setTimeout(() => flyHearts(10), 200);
-          setTimeout(() => flyHearts(8), 600);
+          triggerEffect('fireworks');
+          setTimeout(() => triggerEffect('kiss'), 300);
+          setTimeout(() => triggerEffect('fireworks'), 700);
         }
       });
 
-      // Закрытие по клику на фон
       modalOverlay.addEventListener('click', (e) => {
         if (e.target === modalOverlay) modalOverlay.classList.remove('show');
       });
 
-      // === СТАРТОВЫЙ ФЕЙЕРВЕРК ===
-      setTimeout(() => createConfetti(35), 500);
-      setTimeout(() => createConfetti(25), 1000);
+      // === СТАРТОВЫЙ ЭФФЕКТ ===
+      setTimeout(() => {
+        triggerEffect('fireworks');
+        setTimeout(() => triggerEffect('fireworks'), 400);
+      }, 600);
 
-      // === ДОПОЛНИТЕЛЬНО: встряска для мобильных ===
-      // Если пользователь трясёт телефон - конфетти
-      if (window.DeviceMotionEvent) {
-        let lastShake = 0;
-        window.addEventListener('devicemotion', function(e) {
-          const acc = e.accelerationIncludingGravity;
-          if (!acc) return;
-          const total = Math.abs(acc.x) + Math.abs(acc.y) + Math.abs(acc.z);
-          const now = Date.now();
-          if (total > 25 && now - lastShake > 1000) {
-            lastShake = now;
-            createConfetti(60);
-            flyHearts(8);
-          }
-        }, { passive: true });
-      }
-
-      console.log('🚀 Мобильная версия готова!');
+      console.log('🚀 Мобильная версия с Canvas анимациями!');
       console.log(isBirthday ? '🎉 СЕГОДНЯ ДЕНЬ РОЖДЕНИЯ!' : '🔒 Открытка заблокирована');
 
     })();
